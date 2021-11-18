@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.sy.prj.member.service.MemberMapper">
+
+	<select id="memberSelectList"
+		resultType="co.sy.prj.member.service.MemberVO">
+		SELECT * FROM MEMBER
+	</select>
+	
+	<select id="memberSelect"
+		resultType="co.sy.prj.member.service.MemberVO">
+		SELECT * FROM MEMBER
+		WHERE ID = #{id}
+		<if test="password != null">   <!-- 로그인 체크시 확인하기 위한 조건문. -->
+			AND PASSWORD = #{password}
+		</if>
+	</select>
+	
+	<insert id="memberInsert"
+		parameterType="co.sy.prj.member.service.MemberVO">
+		INSERT INTO MEMBER
+		VALUES(#{id},#{password},#{name},#{tel},#{address},#{author})
+	</insert>
+	
+	<delete id="memberDelete"
+		parameterType="co.sy.prj.member.service.MemberVO">
+		DELETE FROM MEMBER WHERE ID = #{id}
+	</delete>
+	
+	<update id="memberUpdate"
+		parameterType="co.sy.prj.member.service.MemberVO">
+		UPDATE MEMBER SET
+		PASSWORD=#{password},NAME=#{name},TEL=#{tel},ADDRESS=#{address},AUTHOR=#{author}
+		WHERE ID = #{id}
+	</update>
+	
+	<select id="memberIdCheck" resultType="boolean">
+		<!--  SELECT IF(count(*)=1,1,0) 아이디가 존재하면 1 true, 아니면 0 false -->
+		SELECT CASE WHEN(COUNT(*) = 1) THEN 'TRUE' ELSE 'FALSE' END
+		FROM MEMBER
+		WHERE ID=#{id}
+	</select>
+	
+	<update id="memberAuthorUpdate"
+			parameterType="co.sy.prj.member.service.MemberVO">
+		UPDATE MEMBER
+		SET AUTHOR = #{author}
+		WHERE ID = #{id}		
+	</update>
+
+</mapper>
